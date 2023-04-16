@@ -8,20 +8,32 @@ import csv
 def get_user_name():
         user = getpass.getuser()
         return user
+    
+def analista_dict():
+    pass
 
 #function to save log.csv
 def save_log(user, status):  
-    col_dict = ['Analista', 'Status']
-    lin = [{'Analista': user, 'Status': status}]
-    
+    col_info = ['Analista', 'Status']
+    lin_info = [{'Analista': user, 'Status': status}]
+
     with open('D:/Coding/python_files/Fila_Online/fila_online_v0.1b/logs/log.csv', 
               'w',
               newline = '') as log:
-        write = csv.DictWriter(log, fieldnames = col_dict, delimiter = ';')
-        
-        write.writeheader()
-        write.writerows(lin)
-    
+                if user not in lin_info:
+                    with open('D:/Coding/python_files/Fila_Online/fila_online_v0.1b/logs/log.csv', 
+                              'a',
+                              newline = '') as log:
+                                write = csv.DictWriter(log, fieldnames = col_info, delimiter = ';')
+            
+                                write.writeheader()
+                                write.writerows(lin_info)
+                else:                
+                    write = csv.DictWriter(log, fieldnames = col_info, delimiter = ';')
+            
+                    write.writeheader()
+                    write.writerows(lin_info)
+            
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -60,7 +72,19 @@ class App(tk.Tk):
                                  'BAHEIRO'
                                  ]
                  return user_status  
-        
+            elif username == 'CASSIO':
+                 user_status =  ['AUSENTE',
+                                 'DISPONÍVEL',
+                                 '-------------',
+                                 'ATENDIMENTO',
+                                 'DEASUS',
+                                 'DGAE',
+                                 '-------------',
+                                 'ALMOÇO',
+                                 'BAHEIRO'
+                                 ]
+                 return user_status 
+                    
         #analista name label
         analista_label = ttk.Label(self, text = "Analista: ")
         analista_label.grid(column = 0, 
