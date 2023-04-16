@@ -11,12 +11,16 @@ def get_user_name():
 
 #function to save log.csv
 def save_log(user, status):  
-    col = ['Analista', 'Status']
-    lin = [[user, status]]
+    col_dict = ['Analista', 'Status']
+    lin = [{'Analista': user, 'Status': status}]
     
-    with open('')
-    
-    pass
+    with open('D:/Coding/python_files/Fila_Online/fila_online_v0.1b/logs/log.csv', 
+              'w',
+              newline = '') as log:
+        write = csv.DictWriter(log, fieldnames = col_dict, delimiter = ';')
+        
+        write.writeheader()
+        write.writerows(lin)
     
 class App(tk.Tk):
     def __init__(self):
@@ -32,15 +36,30 @@ class App(tk.Tk):
         self.columnconfigure(0, weight = 1)
         self.columnconfigure(1, weight = 3)
         
-        self.create_widgets()
+        self.create_widgets()    
       
     def create_widgets(self):
+        #log info function
         def send_log():
             user = get_user_name()
             status = status_options.get()
             
             save_log(user.upper(), status)
-     
+        
+        #personalize user status options
+        def user_status_option():
+            if username == 'rauln':
+                 user_status =  ['AUSENTE',
+                                 'DISPONÍVEL',
+                                 '-------------',
+                                 'ATENDIMENTO',
+                                 'DEASUS',
+                                 'DGAE',
+                                 '-------------',
+                                 'ALMOÇO',
+                                 'BAHEIRO'
+                                 ]
+                 return user_status  
         
         #analista name label
         analista_label = ttk.Label(self, text = "Analista: ")
@@ -79,10 +98,10 @@ class App(tk.Tk):
                             sticky= tk.E, 
                             padx = 22, 
                             pady = 5)
-        #config
-        status_options['values'] = ['DISPONÍVEL', 'BANHEIRO', 'CHAT']
+        #config        
+        status_options['values'] = user_status_option()
         status_options['state'] = 'readonly'
-        status_options.current(0)
+        status_options.current(1)
         
         #status save button
         save_status = ttk.Button(self, text = "Salvar", command = send_log)
