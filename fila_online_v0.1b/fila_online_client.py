@@ -3,36 +3,34 @@ from tkinter import *
 from tkinter import ttk
 import getpass
 import csv
+import os
 
 #function to get current user from pc
 def get_user_name():
         user = getpass.getuser()
         return user
     
-def analista_dict():
-    pass
 
 #function to save log.csv
 def save_log(user, status):  
     col_info = ['Analista', 'Status']
     lin_info = [{'Analista': user, 'Status': status}]
-
-    with open('D:/Coding/python_files/Fila_Online/fila_online_v0.1b/logs/log.csv', 
-              'w',
-              newline = '') as log:
-                if user not in lin_info:
-                    with open('D:/Coding/python_files/Fila_Online/fila_online_v0.1b/logs/log.csv', 
-                              'a',
-                              newline = '') as log:
-                                write = csv.DictWriter(log, fieldnames = col_info, delimiter = ';')
+    
+    if os.path.exists('D:/Coding/python_files/Fila_Online/fila_online_v0.1b/logs/log.csv'):
+        with open('C:/Users/raul-nunes/Documents/Coding/Python Files/Fila_Online/fila_online_v0.1b/logs/log.csv', 
+                    'a',
+                    newline = '') as log:
+            write = csv.DictWriter(log, fieldnames = col_info, delimiter = ';')
             
-                                write.writeheader()
-                                write.writerows(lin_info)
-                else:                
-                    write = csv.DictWriter(log, fieldnames = col_info, delimiter = ';')
+            write.writerows(lin_info)
+    else:
+        with open('C:/Users/raul-nunes/Documents/Coding/Python Files/Fila_Online/fila_online_v0.1b/logs/log.csv', 
+                    'w',
+                    newline = '') as log:
+            write = csv.DictWriter(log, fieldnames = col_info, delimiter = ';')
             
-                    write.writeheader()
-                    write.writerows(lin_info)
+            write.writeheader()
+            write.writerows(lin_info)
             
 class App(tk.Tk):
     def __init__(self):
@@ -58,7 +56,7 @@ class App(tk.Tk):
             
             save_log(user.upper(), status)
         
-        #personalize user status options
+       #personalize user status options
         def user_status_option():
             if username == 'rauln':
                  user_status =  ['AUSENTE',
@@ -69,21 +67,22 @@ class App(tk.Tk):
                                  'DGAE',
                                  '-------------',
                                  'ALMOÇO',
-                                 'BAHEIRO'
+                                 'BANHEIRO'
                                  ]
                  return user_status  
-            elif username == 'CASSIO':
+            elif username == 'cassio-fernandes':
                  user_status =  ['AUSENTE',
                                  'DISPONÍVEL',
                                  '-------------',
                                  'ATENDIMENTO',
-                                 'DEASUS',
-                                 'DGAE',
+                                 'CHAT',
+                                 'TEAMS',
+                                 'TELEFONE',
                                  '-------------',
                                  'ALMOÇO',
-                                 'BAHEIRO'
+                                 'BANHEIRO'
                                  ]
-                 return user_status 
+                 return user_status
                     
         #analista name label
         analista_label = ttk.Label(self, text = "Analista: ")
@@ -128,10 +127,11 @@ class App(tk.Tk):
         status_options.current(1)
         
         #status save button
-        save_status = ttk.Button(self, text = "Salvar", command = send_log)
+        save_status = ttk.Button(self, text = "Registrar", command = send_log)
         save_status.grid(column = 1,
                          row = 1,
-                         sticky = tk.E)
+                         sticky = tk.E,
+                         padx = 5)
 
 if __name__ == "__main__":
     app = App()
